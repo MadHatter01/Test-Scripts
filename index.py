@@ -4,7 +4,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-browser = webdriver.Firefox(executable_path=r'C:/Users/VaishuBox/Desktop/automation_test/driver/geckodriver.exe')
+browser = webdriver.Firefox(executable_path=r'geckodriver.exe')
 
 browser.get('http://localhost:8080')
 browser.maximize_window()
