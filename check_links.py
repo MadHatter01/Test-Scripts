@@ -3,8 +3,10 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from urllib.request import urlopen
 from tabulate import tabulate
+from selenium.webdriver.support.ui import Select
+
 import time
- 
+
 class Broken_parser():
     def __init__(self):
         self.url= ""
@@ -23,15 +25,22 @@ class Sel_tester():
         pass
 
     def setup_drivers(self):
-        self.browser = webdriver.Firefox(executable_path=r'..\driver\geckodriver.exe')
+     
+        # DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+        # capabilities.setCapability(FirefoxDriver.PROFILE, geoDisabled);
+        
+        self.browser = webdriver.Firefox( executable_path=r'..\driver\geckodriver.exe')
         self.browser.maximize_window()
+        
         self.browser.get('http://localhost:8080')
+        self.browser.execute_script("navigator.geolocation.getCurrentPosition = function(success) { success({coords: {latitude: 44.566818,  longitude: -123.279352}}); }")
 
     def dom_status(self):
         self.browser.execute_script("alert('Moving to next Page, DOM state is '+document.readyState)")
 
     
     def examine_page(self):    
+
         links = self.browser.find_elements_by_xpath("//a[@href]")
         for link in links:
             print(link.get_attribute('href'))
@@ -64,10 +73,11 @@ if __name__=="__main__":
 
     url = Sel_tester()
     url.setup_drivers()
+    
     url.examine_page()
     print("\n")
     
-    url.navigate_by_tag('Go to Map')
+    url.navigate_by_tag('Login')
             
     # campus Map check
   
