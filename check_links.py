@@ -58,7 +58,15 @@ class Sel_tester():
         print(tag)
         event_page = self.browser.find_element_by_xpath(xpath)
         event_page.click()
-    
+    def select_options(self):
+        start = Select(self.browser.find_element_by_id('start'))
+        start.select_by_index(3)
+        time.sleep(1)
+        end= Select(self.browser.find_element_by_id('end'))
+        end.select_by_index(5)
+        time.sleep(5)
+        
+
     def progress_link(self):
         self.browser.switch_to_alert().accept()
         # print(self.all_urls)
@@ -83,13 +91,14 @@ if __name__=="__main__":
   
     # url.dom_status()
     url.examine_page()
+    url.select_options()
     url.navigate_by_xpath('/html/body/div/div/div[1]/div[1]/ul/li[5]/a', 'Event Page')
     print("\n")
 
     #event Form check
     # url.dom_status()
     url.examine_page()
-
+    
     url.test_conclude()
     
 
