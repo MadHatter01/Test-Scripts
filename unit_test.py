@@ -8,26 +8,38 @@ import unittest
 import time
 
 
-class FormTest(unittest.TestCase):
+class TestForm(unittest.TestCase):
 
 
-    def setup_drivers(self):
+
+    def test_driver(self):
      
-        # DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-        # capabilities.setCapability(FirefoxDriver.PROFILE, geoDisabled);
-        
+
         self.browser = webdriver.Firefox( executable_path=r'..\driver\geckodriver.exe')
         self.browser.maximize_window()
         
         self.browser.get('http://localhost:8080')
         self.browser.execute_script("navigator.geolocation.getCurrentPosition = function(success) { success({coords: {latitude: 44.566818,  longitude: -123.279352}}); }")
+        print("Unit Test - 1")
+        self.assertEqual(self.browser.title, "Vue App")
 
-    def navigate(self):
+    def test_navigation(self):
+        self.browser = webdriver.Firefox( executable_path=r'..\driver\geckodriver.exe')
+        self.browser.maximize_window()
+        
+        self.browser.get('http://localhost:8080')
         login=self.browser.find_element_by_link_text('Login')
         login.click()
-        self.browser.find_element_by_xpath('/html/body/div/div/div[1]/div[1]/ul/li[5]/a').click()
+        print("Unit Test -2")
+        print(self.browser.current_url)
+        self.assertEqual(self.browser.current_url,"http://localhost:8080/#/map")
 
-    def single_unit(self):
+    def test_formvalidation(self):
+        self.browser = webdriver.Firefox( executable_path=r'..\driver\geckodriver.exe')
+        self.browser.maximize_window()
+        
+        self.browser.get('http://localhost:8080/#/eventform')
+
         eventTitle= self.browser.find_element_by_xpath('//*[@id="EventName"]')
         eventTitle.send_keys("Software Engineering Class")
 
@@ -35,19 +47,19 @@ class FormTest(unittest.TestCase):
         submit.click()
 
         display_msg = self.browser.find_element_by_xpath('//*[@id="content"]/div/div[2]/div')
-        assert "The event has been saved" in display_msg.text
+        self.assertEqual("The event has been saved.", display_msg.text)  
 
     def tearDown(self):
+        pass
         self.browser.quit()
 
 
 if __name__=="__main__":
-    checker = FormTest();
-
+    # checker = FormTest()
     # checker.setup_drivers()
     # checker.navigate()
     # checker.single_unit()
-    unittest.main()
+    unittest.main(verbosity=2)
     
 
     print("\n")
