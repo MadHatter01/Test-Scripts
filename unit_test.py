@@ -32,7 +32,7 @@ class TestForm(unittest.TestCase):
         login.click()
         print("Unit Test -2")
         print(self.browser.current_url)
-        self.assertEqual(self.browser.current_url,"http://localhost:8080/#/map")
+        self.assertEqual(self.browser.current_url,"http://localhost:8080/#/dashboard")
 
     def test_formvalidation(self):
         self.browser = webdriver.Firefox( executable_path=r'..\driver\geckodriver.exe')
@@ -43,15 +43,24 @@ class TestForm(unittest.TestCase):
         eventTitle= self.browser.find_element_by_xpath('//*[@id="EventName"]')
         eventTitle.send_keys("Software Engineering Class")
 
-        submit = self.browser.find_element_by_xpath('//*[@id="content"]/div/div[2]/form/div[6]/button')
+        submit = self.browser.find_element_by_xpath('//*[@id="content"]/div/div/form/div[6]/button')
         submit.click()
-
-        display_msg = self.browser.find_element_by_xpath('//*[@id="content"]/div/div[2]/div')
+        print("Unit Test -3")
+        display_msg = self.browser.find_element_by_xpath('/html/body/div/div[2]/div/div[2]/div/div/div/div')
         self.assertEqual("The event has been saved.", display_msg.text)  
 
+    def test_unknownpage(self):
+        self.browser = webdriver.Firefox( executable_path=r'..\driver\geckodriver.exe')
+        self.browser.maximize_window()
+        
+        self.browser.get('http://localhost:8080/#/badpage')
+        display_msg = self.browser.find_element_by_xpath('//*[@id="app"]/div[2]/h1')
+        self.assertEqual("Page not found.",display_msg.text)
+
+
     def tearDown(self):
-        pass
         self.browser.quit()
+        
 
 
 if __name__=="__main__":
